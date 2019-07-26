@@ -46,14 +46,14 @@ void zlog_mdc_del(zlog_mdc_t * a_mdc)
 	zc_assert(a_mdc,);
 	if (a_mdc->tab) zc_hashtable_del(a_mdc->tab);
 	free(a_mdc);
-	zc_debug("zlog_mdc_del[%p]", a_mdc);
+	zc_profile(ZC_DEBUG,"zlog_mdc_del[%p]", a_mdc);
 	return;
 }
 
 static void zlog_mdc_kv_del(zlog_mdc_kv_t * a_mdc_kv)
 {
 	free(a_mdc_kv);
-	zc_debug("zlog_mdc_kv_del[%p]", a_mdc_kv);
+	zc_profile(ZC_DEBUG,"zlog_mdc_kv_del[%p]", a_mdc_kv);
 }
 
 static zlog_mdc_kv_t *zlog_mdc_kv_new(const char *key, const char *value)

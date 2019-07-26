@@ -91,7 +91,7 @@ void zlog_buf_del(zlog_buf_t * a_buf)
 	//zc_assert(a_buf,);
 	if (a_buf->start) free(a_buf->start);
 	free(a_buf);
-	zc_debug("zlog_buf_del[%p]", a_buf);
+	zc_profile(ZC_DEBUG,"zlog_buf_del[%p]", a_buf);
 	return;
 }
 
@@ -246,7 +246,7 @@ int zlog_buf_vprintf(zlog_buf_t * a_buf, const char *format, va_list args)
 		return -1;
 	} else if (nwrite >= size_left) {
 		int rc;
-		//zc_debug("nwrite[%d]>=size_left[%ld],format[%s],resize", nwrite, size_left, format);
+		//zc_profile(ZC_DEBUG,"nwrite[%d]>=size_left[%ld],format[%s],resize", nwrite, size_left, format);
 		rc = zlog_buf_resize(a_buf, nwrite - size_left + 1);
 		if (rc > 0) {
 			zc_error("conf limit to %ld, can't extend, so truncate", a_buf->size_max);
@@ -265,7 +265,7 @@ int zlog_buf_vprintf(zlog_buf_t * a_buf, const char *format, va_list args)
 			zc_error("zlog_buf_resize fail");
 			return -1;
 		} else {
-			//zc_debug("zlog_buf_resize succ, to[%ld]", a_buf->size_real);
+			//zc_profile(ZC_DEBUG,"zlog_buf_resize succ, to[%ld]", a_buf->size_real);
 
 #ifdef _MSC_VER
 	                ap = args;
@@ -321,7 +321,7 @@ int zlog_buf_printf_dec32(zlog_buf_t * a_buf, uint32_t ui32, int width)
 
 	if ((q = a_buf->tail + out_len) > a_buf->end) {
 		int rc;
-		//zc_debug("size_left not enough, resize");
+		//zc_profile(ZC_DEBUG,"size_left not enough, resize");
 		rc = zlog_buf_resize(a_buf, out_len - (a_buf->end - a_buf->tail));
 		if (rc > 0) {
 			size_t len_left;
@@ -344,7 +344,7 @@ int zlog_buf_printf_dec32(zlog_buf_t * a_buf, uint32_t ui32, int width)
 			zc_error("zlog_buf_resize fail");
 			return -1;
 		} else {
-			//zc_debug("zlog_buf_resize succ, to[%ld]", a_buf->size_real);
+			//zc_profile(ZC_DEBUG,"zlog_buf_resize succ, to[%ld]", a_buf->size_real);
 			q = a_buf->tail + out_len; /* re-calculate p*/
 		}
 	}
@@ -412,7 +412,7 @@ int zlog_buf_printf_dec64(zlog_buf_t * a_buf, uint64_t ui64, int width)
 
 	if ((q = a_buf->tail + out_len) > a_buf->end) {
 		int rc;
-		//zc_debug("size_left not enough, resize");
+		//zc_profile(ZC_DEBUG,"size_left not enough, resize");
 		rc = zlog_buf_resize(a_buf, out_len - (a_buf->end - a_buf->tail));
 		if (rc > 0) {
 			size_t len_left;
@@ -435,7 +435,7 @@ int zlog_buf_printf_dec64(zlog_buf_t * a_buf, uint64_t ui64, int width)
 			zc_error("zlog_buf_resize fail");
 			return -1;
 		} else {
-			//zc_debug("zlog_buf_resize succ, to[%ld]", a_buf->size_real);
+			//zc_profile(ZC_DEBUG,"zlog_buf_resize succ, to[%ld]", a_buf->size_real);
 			q = a_buf->tail + out_len; /* re-calculate p*/
 		}
 	}
@@ -492,7 +492,7 @@ int zlog_buf_printf_hex(zlog_buf_t * a_buf, uint32_t ui32, int width)
 
 	if ((q = a_buf->tail + out_len) > a_buf->end) {
 		int rc;
-		//zc_debug("size_left not enough, resize");
+		//zc_profile(ZC_DEBUG,"size_left not enough, resize");
 		rc = zlog_buf_resize(a_buf, out_len - (a_buf->end - a_buf->tail));
 		if (rc > 0) {
 			size_t len_left;
@@ -515,7 +515,7 @@ int zlog_buf_printf_hex(zlog_buf_t * a_buf, uint32_t ui32, int width)
 			zc_error("zlog_buf_resize fail");
 			return -1;
 		} else {
-			//zc_debug("zlog_buf_resize succ, to[%ld]", a_buf->size_real);
+			//zc_profile(ZC_DEBUG,"zlog_buf_resize succ, to[%ld]", a_buf->size_real);
 			q = a_buf->tail + out_len; /* re-calculate p*/
 		}
 	}
@@ -543,7 +543,7 @@ int zlog_buf_append(zlog_buf_t * a_buf, const char *str, size_t str_len)
 
 	if ((p = a_buf->tail + str_len) > a_buf->end) {
 		int rc;
-		//zc_debug("size_left not enough, resize");
+		//zc_profile(ZC_DEBUG,"size_left not enough, resize");
 		rc = zlog_buf_resize(a_buf, str_len - (a_buf->end - a_buf->tail));
 		if (rc > 0) {
 			size_t len_left;
@@ -559,7 +559,7 @@ int zlog_buf_append(zlog_buf_t * a_buf, const char *str, size_t str_len)
 			zc_error("zlog_buf_resize fail");
 			return -1;
 		} else {
-			//zc_debug("zlog_buf_resize succ, to[%ld]", a_buf->size_real);
+			//zc_profile(ZC_DEBUG,"zlog_buf_resize succ, to[%ld]", a_buf->size_real);
 			p = a_buf->tail + str_len; /* re-calculate p*/
 		}
 	}
@@ -612,7 +612,7 @@ int zlog_buf_adjust_append(zlog_buf_t * a_buf, const char *str, size_t str_len,
 
 	if (append_len > a_buf->end - a_buf->tail) {
 		int rc = 0;
-		//zc_debug("size_left not enough, resize");
+		//zc_profile(ZC_DEBUG,"size_left not enough, resize");
 		rc = zlog_buf_resize(a_buf, append_len - (a_buf->end -a_buf->tail));
 		if (rc > 0) {
 			zc_error("conf limit to %ld, can't extend, so output", a_buf->size_max);
@@ -644,7 +644,7 @@ int zlog_buf_adjust_append(zlog_buf_t * a_buf, const char *str, size_t str_len,
 			zc_error("zlog_buf_resize fail");
 			return -1;
 		} else {
-			//zc_debug("zlog_buf_resize succ, to[%ld]", a_buf->size_real);
+			//zc_profile(ZC_DEBUG,"zlog_buf_resize succ, to[%ld]", a_buf->size_real);
 		}
 	}
 

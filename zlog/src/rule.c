@@ -182,7 +182,7 @@ static int zlog_rule_output_static_file_rotate(zlog_rule_t * a_rule, zlog_thread
 	}
 
 	if (len > a_rule->archive_max_size) {
-		zc_debug("one msg's len[%ld] > archive_max_size[%ld], no rotate",
+		zc_profile(ZC_DEBUG,"one msg's len[%ld] > archive_max_size[%ld], no rotate",
 			 (long)len, (long)a_rule->archive_max_size);
 		return 0;
 	}
@@ -305,7 +305,7 @@ static int zlog_rule_output_dynamic_file_rotate(zlog_rule_t * a_rule, zlog_threa
 	}
 
 	if (len > a_rule->archive_max_size) {
-		zc_debug("one msg's len[%ld] > archive_max_size[%ld], no rotate",
+		zc_profile(ZC_DEBUG,"one msg's len[%ld] > archive_max_size[%ld], no rotate",
 			 (long)len, (long) a_rule->archive_max_size);
 		return 0;
 	}
@@ -711,7 +711,7 @@ zlog_rule_t *zlog_rule_new(char *line,
 
 	/* check and get format */
 	if (STRCMP(format_name, ==, "")) {
-		zc_debug("no format specified, use default");
+		zc_profile(ZC_DEBUG,"no format specified, use default");
 		a_rule->format = default_format;
 	} else {
 		int i;
@@ -962,7 +962,7 @@ void zlog_rule_del(zlog_rule_t * a_rule)
 		a_rule->dynamic_specs = NULL;
 	}
 	free(a_rule);
-	zc_debug("zlog_rule_del[%p]", a_rule);
+	zc_profile(ZC_DEBUG,"zlog_rule_del[%p]", a_rule);
 	return;
 }
 

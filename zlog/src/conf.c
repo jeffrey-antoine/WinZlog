@@ -36,7 +36,7 @@
 
 #ifdef _MSC_VER
 #define DEF_TIME_FMT "%Y-%m-%d %H:%M:%S"
-#define snprintf _snprintf_s 
+//#define snprintf _snprintf_s 
 #else
 #define DEF_TIME_FMT "%F %T"
 #endif
@@ -108,7 +108,7 @@ void zlog_conf_del(zlog_conf_t * a_conf)
 	if (a_conf->formats) zc_arraylist_del(a_conf->formats);
 	if (a_conf->rules) zc_arraylist_del(a_conf->rules);
 	free(a_conf);
-	zc_debug("zlog_conf_del[%p]");
+	zc_profile(ZC_DEBUG,"zlog_conf_del[%p]");
 	return;
 }
 

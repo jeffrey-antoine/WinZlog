@@ -87,7 +87,7 @@ void zlog_rotater_del(zlog_rotater_t *a_rotater)
 
 	if (a_rotater->lock_fd) {
 #ifdef _MSC_VER
-		if (CloseHandle(a_rotater->lock_fd)) {
+		if (!CloseHandle(a_rotater->lock_fd)) {/* modified by Jilei, fails : 0, success : 1*/
 			zc_error("close fail[%s], errno[%d]", a_rotater->lock_file, GetLastError());
 		}
 #else
@@ -102,7 +102,7 @@ void zlog_rotater_del(zlog_rotater_t *a_rotater)
 	}
 
 	free(a_rotater);
-	zc_debug("zlog_rotater_del[%p]", a_rotater);
+	zc_profile(ZC_DEBUG,"zlog_rotater_del[%p]", a_rotater);
 	return;
 }
 
@@ -155,7 +155,7 @@ zlog_rotater_t *zlog_rotater_new(char *lock_file)
 			(GENERIC_READ|GENERIC_WRITE),
 			(FILE_SHARE_READ|FILE_SHARE_WRITE),
 			NULL,OPEN_ALWAYS,FILE_ATTRIBUTE_NORMAL,NULL);
-	zc_debug("opened");
+	zc_profile(ZC_DEBUG,"opened");
 	if (fd <= 0) {
 		zc_error("open file[%s] fail, errno[%d]", lock_file, errno);
 		goto err;
@@ -183,8 +183,8 @@ err:
 
 static void zlog_file_del(zlog_file_t * a_file)
 {
-	zc_debug("del onefile[%p]", a_file);
-	zc_debug("a_file->path[%s]", a_file->path);
+	zc_profile(ZC_DEBUG,"del onefile[%p]", a_file);
+	zc_profile(ZC_DEBUG,"a_file->path[%s]", a_file->path);
 	free(a_file);
 }
 
@@ -647,7 +647,7 @@ int zlog_rotater_rotate(zlog_rotater_t *a_rotater,
 		rc = -1;
 	} /* else if (rc == 0) */
 
-	//zc_debug("zlog_rotater_file_ls_mv success");
+	//zc_profile(ZC_DEBUG,"zlog_rotater_file_ls_mv success");
 
 	if (reopen_fd == NULL) goto exit;
 

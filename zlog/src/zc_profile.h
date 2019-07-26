@@ -63,6 +63,7 @@ enum zc_profile_flag {
 		zc_profile_inner(ZC_ERROR, __FILE__, __LINE__, __VA_ARGS__)
 	#define zc_profile(flag, ...) \
 		zc_profile_inner(flag, __FILE__, __LINE__, __VA_ARGS__)
+   /* #define zc_profile(flag, ...)*/
 #endif
 
 

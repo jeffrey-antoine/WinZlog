@@ -56,7 +56,7 @@ void zlog_format_del(zlog_format_t * a_format)
 		zc_arraylist_del(a_format->pattern_specs);
 	}
 	free(a_format);
-	zc_debug("zlog_format_del[%p]", a_format);
+	zc_profile(ZC_DEBUG,"zlog_format_del[%p]", a_format);
 	return;
 }
 

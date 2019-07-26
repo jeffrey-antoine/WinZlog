@@ -44,7 +44,7 @@ void zlog_record_table_del(zc_hashtable_t * records)
 {
 	zc_assert(records,);
 	zc_hashtable_del(records);
-	zc_debug("zlog_record_table_del[%p]", records);
+	zc_profile(ZC_DEBUG,"zlog_record_table_del[%p]", records);
 	return;
 }
 

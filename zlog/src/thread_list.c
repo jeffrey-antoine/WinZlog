@@ -41,7 +41,7 @@ void zlog_thread_list_del(zc_arraylist_t * threads)
 {
 	zc_assert(threads,);
 	zc_arraylist_del(threads);
-	zc_debug("zlog_thread_list_del[%p]", threads);
+	zc_profile(ZC_DEBUG,"zlog_thread_list_del[%p]", threads);
 	return;
 }
 

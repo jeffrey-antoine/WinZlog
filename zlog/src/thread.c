@@ -68,7 +68,7 @@ void zlog_thread_del(zlog_thread_t * a_thread)
 		zlog_buf_del(a_thread->msg_buf);
 
 	free(a_thread);
-	zc_debug("zlog_thread_del[%p]", a_thread);
+	zc_profile(ZC_DEBUG,"zlog_thread_del[%p]", a_thread);
 	return;
 }
 

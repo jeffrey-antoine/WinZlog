@@ -37,7 +37,7 @@ static const char *syslog_conf_dir = SYSLOG_CONF_DIR;
 #else
 #    define SYSLOG_DGRAM_SIZE 1024
 #endif
-#define snprintf _snprintf_s 
+//#define snprintf _snprintf_s 
 
 
 static BOOL initialized = FALSE;

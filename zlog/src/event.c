@@ -63,7 +63,7 @@ void zlog_event_del(zlog_event_t * a_event)
 {
 	zc_assert(a_event,);
 	free(a_event);
-	zc_debug("zlog_event_del[%p]", a_event);
+	zc_profile(ZC_DEBUG,"zlog_event_del[%p]", a_event);
 	return;
 }
 

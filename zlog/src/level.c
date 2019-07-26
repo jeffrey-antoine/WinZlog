@@ -44,7 +44,7 @@ void zlog_level_del(zlog_level_t *a_level)
 {
 	zc_assert(a_level,);
 	free(a_level);
-	zc_debug("zlog_level_del[%p]", a_level);
+	zc_profile(ZC_DEBUG, "zlog_level_del[%p]", a_level);
 	return;
 }
 

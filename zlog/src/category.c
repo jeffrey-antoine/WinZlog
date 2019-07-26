@@ -49,7 +49,7 @@ void zlog_category_del(zlog_category_t * a_category)
 	zc_assert(a_category,);
 	if (a_category->fit_rules) zc_arraylist_del(a_category->fit_rules);
 	free(a_category);
-	zc_debug("zlog_category_del[%p]", a_category);
+	zc_profile(ZC_DEBUG,"zlog_category_del[%p]", a_category);
 	return;
 }
 
@@ -103,7 +103,7 @@ static int zlog_category_obtain_rules(zlog_category_t * a_category, zc_arraylist
 
 	if (count == 0) {
 		if (wastebin_rule) {
-			zc_debug("category[%s], no match rules, use wastebin_rule", a_category->name);
+			zc_profile(ZC_DEBUG,"category[%s], no match rules, use wastebin_rule", a_category->name);
 			if (zc_arraylist_add(a_category->fit_rules, wastebin_rule)) {
 				zc_error("zc_arrylist_add fail");
 				goto err;
@@ -111,7 +111,7 @@ static int zlog_category_obtain_rules(zlog_category_t * a_category, zc_arraylist
 			zlog_cateogry_overlap_bitmap(a_category, wastebin_rule);
 			count++;
 		} else {
-			zc_debug("category[%s], no match rules & no wastebin_rule", a_category->name);
+			zc_profile(ZC_DEBUG,"category[%s], no match rules & no wastebin_rule", a_category->name);
 		}
 	}
 

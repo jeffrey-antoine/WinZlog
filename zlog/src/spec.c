@@ -466,7 +466,7 @@ void zlog_spec_del(zlog_spec_t * a_spec)
 {
 	zc_assert(a_spec,);
 	free(a_spec);
-	zc_debug("zlog_spec_del[%p]", a_spec);
+	zc_profile(ZC_DEBUG, "zlog_spec_del[%p]", a_spec);
 }
 
 /* a spec may consist of

@@ -190,9 +190,11 @@
  */
 
 /* Try to avoid including windows.h */
+
 #if (defined(__MINGW64__) || defined(__MINGW32__)) && defined(__cplusplus)
 #define PTW32_INCLUDE_WINDOWS_H
 #endif
+#define PTW32_INCLUDE_WINDOWS_H
 
 #if defined(PTW32_INCLUDE_WINDOWS_H)
 #include <windows.h>
@@ -312,6 +314,8 @@ enum {
 # define DWORD unsigned long
 #endif
 #endif
+
+#define _TIMESPEC_DEFINED
 
 #if !defined(HAVE_STRUCT_TIMESPEC)
 #define HAVE_STRUCT_TIMESPEC

@@ -44,7 +44,7 @@ void zlog_category_table_del(zc_hashtable_t * categories)
 {
 	zc_assert(categories,);
 	zc_hashtable_del(categories);
-	zc_debug("zlog_category_table_del[%p]", categories);
+	zc_profile(ZC_DEBUG,"zlog_category_table_del[%p]", categories);
 	return;
 }
 

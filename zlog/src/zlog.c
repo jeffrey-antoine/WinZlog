@@ -117,8 +117,8 @@ err:
 int zlog_init(const char *confpath)
 {
 	int rc;
-	zc_debug("------zlog_init start------");
-	zc_debug("------compile time[%s %s], git version[%s]------",
+	zc_profile(ZC_DEBUG,"------zlog_init start------");
+	zc_profile(ZC_DEBUG,"------compile time[%s %s], git version[%s]------",
 			__DATE__, __TIME__, zlog_git_sha1);
 
 #ifdef _MSC_VER
@@ -146,7 +146,7 @@ int zlog_init(const char *confpath)
 
 	zlog_env_init_flag = 1;
 
-	zc_debug("------zlog_init success end------");
+	zc_profile(ZC_DEBUG,"------zlog_init success end------");
 	rc = pthread_rwlock_unlock(&zlog_env_lock);
 	if (rc) {
 		zc_error("pthread_rwlock_unlock fail, rc=[%d]", rc);
@@ -166,7 +166,7 @@ err:
 int dzlog_init(const char *confpath, const char *cname)
 {
 	int rc = 0;
-	zc_debug("------zlog_init start, compile time[%s %s], git version[%s]------",
+	zc_profile(ZC_DEBUG,"------zlog_init start, compile time[%s %s], git version[%s]------",
 			__DATE__, __TIME__, zlog_git_sha1);
 
 	rc = pthread_rwlock_wrlock(&zlog_env_lock);
@@ -196,7 +196,7 @@ int dzlog_init(const char *confpath, const char *cname)
 
 	zlog_env_init_flag = 1;
 
-	zc_debug("------dzlog_init success end------");
+	zc_profile(ZC_DEBUG,"------dzlog_init success end------");
 	rc = pthread_rwlock_unlock(&zlog_env_lock);
 	if (rc) {
 		zc_error("pthread_rwlock_unlock fail, rc=[%d]", rc);
@@ -222,7 +222,7 @@ int zlog_reload(const char *confpath)
 	int t_up = 0;
 	int c_up = 0;
 
-	zc_debug("------zlog_reload start------");
+	zc_profile(ZC_DEBUG,"------zlog_reload start------");
 	rc = pthread_rwlock_wrlock(&zlog_env_lock);
 	if (rc) {
 		zc_error("pthread_rwlock_wrlock fail, rc[%d]", rc);
@@ -288,7 +288,7 @@ int zlog_reload(const char *confpath)
 	if (t_up) zlog_thread_list_commit_msg_buf(zlog_env_threads);
 	zlog_conf_del(zlog_env_conf);
 	zlog_env_conf = new_conf;
-	zc_debug("------zlog_reload [%d] times end, success------", zlog_env_init_flag);
+	zc_profile(ZC_DEBUG,"------zlog_reload [%d] times end, success------", zlog_env_init_flag);
 	rc = pthread_rwlock_unlock(&zlog_env_lock);
 	if (rc) {
 		zc_error("pthread_rwlock_unlock fail, rc=[%d]", rc);
@@ -309,7 +309,7 @@ err:
 	}
 	return -1;
 quit:
-	zc_debug("------zlog_reload do nothing------");
+	zc_profile(ZC_DEBUG,"------zlog_reload do nothing------");
 	rc = pthread_rwlock_unlock(&zlog_env_lock);
 	if (rc) {
 		zc_error("pthread_rwlock_unlock fail, rc=[%d]", rc);
@@ -322,7 +322,7 @@ void zlog_fini(void)
 {
 	int rc = 0;
 
-	zc_debug("------zlog_fini start------");
+	zc_profile(ZC_DEBUG,"------zlog_fini start------");
 	rc = pthread_rwlock_wrlock(&zlog_env_lock);
 	if (rc) {
 		zc_error("pthread_rwlock_wrlock fail, rc[%d]", rc);
@@ -338,7 +338,7 @@ void zlog_fini(void)
 	zlog_env_init_flag = 0;
 
 exit:
-	zc_debug("------zlog_fini end------");
+	zc_profile(ZC_DEBUG,"------zlog_fini end------");
 	rc = pthread_rwlock_unlock(&zlog_env_lock);
 	if (rc) {
 		zc_error("pthread_rwlock_unlock fail, rc=[%d]", rc);
@@ -353,7 +353,7 @@ zlog_category_t *zlog_get_category(const char *cname)
 	zlog_category_t *a_category = NULL;
 
 	zc_assert(cname, NULL);
-	zc_debug("------zlog_get_category[%s] start------", cname);
+	zc_profile(ZC_DEBUG,"------zlog_get_category[%s] start------", cname);
 	rc = pthread_rwlock_wrlock(&zlog_env_lock);
 	if (rc) {
 		zc_error("pthread_rwlock_wrlock fail, rc[%d]", rc);
@@ -375,7 +375,7 @@ zlog_category_t *zlog_get_category(const char *cname)
 		goto err;
 	}
 
-	zc_debug("------zlog_get_category[%s] success, end------ ", cname);
+	zc_profile(ZC_DEBUG,"------zlog_get_category[%s] success, end------ ", cname);
 	rc = pthread_rwlock_unlock(&zlog_env_lock);
 	if (rc) {
 		zc_error("pthread_rwlock_unlock fail, rc=[%d]", rc);
@@ -397,7 +397,7 @@ int dzlog_set_category(const char *cname)
 	int rc = 0;
 	zc_assert(cname, -1);
 
-	zc_debug("------dzlog_set_category[%s] start------", cname);
+	zc_profile(ZC_DEBUG,"------dzlog_set_category[%s] start------", cname);
 	rc = pthread_rwlock_wrlock(&zlog_env_lock);
 	if (rc) {
 		zc_error("pthread_rwlock_wrlock fail, rc[%d]", rc);
@@ -418,7 +418,7 @@ int dzlog_set_category(const char *cname)
 		goto err;
 	}
 
-	zc_debug("------dzlog_set_category[%s] end, success------ ", cname);
+	zc_profile(ZC_DEBUG,"------dzlog_set_category[%s] end, success------ ", cname);
 	rc = pthread_rwlock_unlock(&zlog_env_lock);
 	if (rc) {
 		zc_error("pthread_rwlock_unlock fail, rc=[%d]", rc);
@@ -879,10 +879,10 @@ void zlog(zlog_category_t * category,
 	zlog_thread_t *a_thread;
 	va_list args;
 
-	zc_debug("------zlog------");
+	zc_profile(ZC_DEBUG,"------zlog------");
 
 	if (zlog_category_needless_level(category, level)) return;
-	zc_debug("------zlog--[%d]----",level);
+	zc_profile(ZC_DEBUG,"------zlog--[%d]----",level);
 
 
 	pthread_rwlock_rdlock(&zlog_env_lock);
@@ -917,8 +917,8 @@ void zlog(zlog_category_t * category,
 	}
 	va_end(args);
 
-	zc_debug("------zlog--[%d]----",__LINE__);
-	zc_debug("category->name:%s category->name_len:%d",category->name, category->name_len);
+	zc_profile(ZC_DEBUG,"------zlog--[%d]----",__LINE__);
+	zc_profile(ZC_DEBUG,"category->name:%s category->name_len:%d",category->name, category->name_len);
 
 	if (zlog_env_conf->reload_conf_period &&
 		++zlog_env_reload_conf_count > zlog_env_conf->reload_conf_period ) {
